@@ -24,9 +24,9 @@ def apply_template_matching(main_image, template_image, method=cv2.TM_CCOEFF_NOR
 
     cv2.rectangle(img, new_top_left, new_bottom_right, 150, 2)
     matched_region = img[max(0, new_top_left[1]):new_bottom_right[1], max(0, new_top_left[0]):new_bottom_right[0]]
-    cv2.imwrite('D:/Stage Air 2024/spring/python-server/AutoExtract+Behavior/matched_region.png', matched_region)
+    cv2.imwrite('matched_region.png', matched_region)
     print("Matched region saved.")
 
-main_image_path = 'D:/Stage Air 2024/spring/python-server/AutoExtract+Behavior/test6.png'
-template_image_path = 'D:/Stage Air 2024/spring/python-server/AutoExtract+Behavior/test2.png'
+main_image_path = 'test6.png'
+template_image_path = 'test2.png'
 apply_template_matching(main_image_path, template_image_path)

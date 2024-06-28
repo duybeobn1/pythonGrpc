@@ -33,7 +33,7 @@ def extract_numbers(image_path):
     return extracted_text
 
 # Path to the image that you uploaded
-image_path = 'D:/Stage Air 2024/spring/python-server/AutoExtract+Behavior/matched_region.png'  # Adjust the path as necessary
+image_path = 'matched_region.png'  # Adjust the path as necessary
 
 # Extract numbers
 numbers = extract_numbers(image_path)
