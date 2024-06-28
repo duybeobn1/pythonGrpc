@@ -5,20 +5,20 @@ import park_pb2
 import park_pb2_grpc
 import subprocess
 import uuid
-import psycopg2
+# import psycopg2
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# # Configure logging
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
 
-# Database connection
-conn = psycopg2.connect(
-    host="192.168.1.96",
-    port="6822",
-    user="lab",
-    password="LabM%86",
-    dbname="lab"
-)
+# # Database connection
+# conn = psycopg2.connect(
+#     host="192.168.1.96",
+#     port="6822",
+#     user="lab",
+#     password="LabM%86",
+#     dbname="lab"
+# )
 
 class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
     def ProcessCommand(self, request, context):
