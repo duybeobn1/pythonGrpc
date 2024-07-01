@@ -101,18 +101,16 @@ def extract_numbers(image_path):
     
     return numbers
 
-def continuous_capture():
+def capture():
     template_image_path = 'test2.png'
     try:
-        while True:
-            matched_image_path = apply_template_matching(template_image_path)
-            if matched_image_path:
-                numbers = extract_numbers(matched_image_path)
-                print(numbers)
-            else:
-                print("Failed to match template.")
-            time.sleep(30)
+        matched_image_path = apply_template_matching(template_image_path)
+        if matched_image_path:
+            numbers = extract_numbers(matched_image_path)
+            print(numbers)
+        else:
+            print("Failed to match template.")
     except KeyboardInterrupt:
         print("Program stopped by user.")
 
-continuous_capture()
+capture()
