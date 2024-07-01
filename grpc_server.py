@@ -28,7 +28,7 @@ class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
 
             script_map = {
                 "start": r"part1.py",
-                "read": r"part2.py",
+                "read": r"numberDetection.py",
             }
 
             script = script_map.get(command)
