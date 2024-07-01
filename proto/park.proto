@@ -4,6 +4,7 @@ package park;
 
 service CarParkService {
     rpc ProcessCommand (CommandRequest) returns (CommandResponse);
+    rpc StreamLogs (Empty) returns (stream LogMessage);
 }
 
 message CommandRequest {
@@ -13,3 +14,10 @@ message CommandRequest {
 message CommandResponse {
     string result = 1;
 }
+
+message LogMessage {
+    string message = 1;
+    string timestamp = 2;
+}
+
+message Empty {}

@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\npark.proto\x12\x04park\"!\n\x0e\x43ommandRequest\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\"!\n\x0f\x43ommandResponse\x12\x0e\n\x06result\x18\x01 \x01(\t2O\n\x0e\x43\x61rParkService\x12=\n\x0eProcessCommand\x12\x14.park.CommandRequest\x1a\x15.park.CommandResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\npark.proto\x12\x04park\"!\n\x0e\x43ommandRequest\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\"!\n\x0f\x43ommandResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"0\n\nLogMessage\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\t\"\x07\n\x05\x45mpty2~\n\x0e\x43\x61rParkService\x12=\n\x0eProcessCommand\x12\x14.park.CommandRequest\x1a\x15.park.CommandResponse\x12-\n\nStreamLogs\x12\x0b.park.Empty\x1a\x10.park.LogMessage0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,6 +25,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_COMMANDREQUEST']._serialized_end=53
   _globals['_COMMANDRESPONSE']._serialized_start=55
   _globals['_COMMANDRESPONSE']._serialized_end=88
-  _globals['_CARPARKSERVICE']._serialized_start=90
-  _globals['_CARPARKSERVICE']._serialized_end=169
+  _globals['_LOGMESSAGE']._serialized_start=90
+  _globals['_LOGMESSAGE']._serialized_end=138
+  _globals['_EMPTY']._serialized_start=140
+  _globals['_EMPTY']._serialized_end=147
+  _globals['_CARPARKSERVICE']._serialized_start=149
+  _globals['_CARPARKSERVICE']._serialized_end=275
 # @@protoc_insertion_point(module_scope)

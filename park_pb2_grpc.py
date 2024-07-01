@@ -5,7 +5,7 @@ import warnings
 
 import park_pb2 as park__pb2
 
-GRPC_GENERATED_VERSION = '1.63.0'
+GRPC_GENERATED_VERSION = '1.64.0'
 GRPC_VERSION = grpc.__version__
 EXPECTED_ERROR_RELEASE = '1.65.0'
 SCHEDULED_RELEASE_DATE = 'June 25, 2024'
@@ -44,12 +44,23 @@ class CarParkServiceStub(object):
                 request_serializer=park__pb2.CommandRequest.SerializeToString,
                 response_deserializer=park__pb2.CommandResponse.FromString,
                 _registered_method=True)
+        self.StreamLogs = channel.unary_stream(
+                '/park.CarParkService/StreamLogs',
+                request_serializer=park__pb2.Empty.SerializeToString,
+                response_deserializer=park__pb2.LogMessage.FromString,
+                _registered_method=True)
 
 
 class CarParkServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ProcessCommand(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StreamLogs(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -63,10 +74,16 @@ def add_CarParkServiceServicer_to_server(servicer, server):
                     request_deserializer=park__pb2.CommandRequest.FromString,
                     response_serializer=park__pb2.CommandResponse.SerializeToString,
             ),
+            'StreamLogs': grpc.unary_stream_rpc_method_handler(
+                    servicer.StreamLogs,
+                    request_deserializer=park__pb2.Empty.FromString,
+                    response_serializer=park__pb2.LogMessage.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'park.CarParkService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('park.CarParkService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -90,6 +107,33 @@ class CarParkService(object):
             '/park.CarParkService/ProcessCommand',
             park__pb2.CommandRequest.SerializeToString,
             park__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StreamLogs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/park.CarParkService/StreamLogs',
+            park__pb2.Empty.SerializeToString,
+            park__pb2.LogMessage.FromString,
             options,
             channel_credentials,
             insecure,
