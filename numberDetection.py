@@ -96,22 +96,22 @@ def extract_numbers(image_path):
     processed_image = preprocess_image(image_path)
     
     # Use Tesseract to extract numbers
-    custom_config = r'--oem 3 --psm 3 outputbase digits'  
+    custom_config = r'--oem 3 --psm 6 outputbase digits'  
     numbers = pytesseract.image_to_string(processed_image, config=custom_config)
     
     return numbers
 
 def continuous_capture():
-    template_image_path = 'D:/Stage Air 2024/AutoExtract+Behavior/test2.png'
+    template_image_path = 'test2.png'
     try:
         while True:
             matched_image_path = apply_template_matching(template_image_path)
             if matched_image_path:
                 numbers = extract_numbers(matched_image_path)
-                print("Detected numbers:", numbers)
+                print(numbers)
             else:
                 print("Failed to match template.")
-            time.sleep(5)
+            time.sleep(30)
     except KeyboardInterrupt:
         print("Program stopped by user.")
 
