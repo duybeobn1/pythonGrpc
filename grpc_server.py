@@ -25,8 +25,8 @@ class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
             logger.info(f"Processing command: {command}")
 
             script_map = {
-                "start": r"/AutoExtract+Behavior/part1.py",
-                "read": r"/AutoExtract+Behavior/part2.py",
+                "start": r"part1.py",
+                "read": r"part2.py",
             }
 
             script = script_map.get(command)
