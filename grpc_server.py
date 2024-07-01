@@ -5,20 +5,12 @@ import park_pb2
 import park_pb2_grpc
 import subprocess
 import uuid
-import time
-from threading import Lock
-from google.protobuf.timestamp_pb2 import Timestamp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
-    def __init__(self):
-        self.log_queue = []
-        self.lock = Lock()
-        self.streams = []
-
     def ProcessCommand(self, request, context):
         try:
             command = request.command
@@ -37,27 +29,21 @@ class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
 
             # Use subprocess.Popen to capture stdout and stderr in real-time
             process = subprocess.Popen(
-                ["python3", "-u", script],
+                ["python", "-u", script],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
             )
 
-            # Read stdout and stderr in real-time
-            while True:
-                output = process.stdout.readline()
-                if output == "" and process.poll() is not None:
-                    break
-                if output:
-                    self._send_log_message(output.strip())
+            stdout, stderr = process.communicate()
 
-            stderr = process.communicate()[1]
-            logger.error(f"Script stderr: {stderr}")
+            logger.info(f"Script stdout: {stdout.strip()}")
+            logger.error(f"Script stderr: {stderr.strip()}")
 
             if process.returncode != 0:
-                raise RuntimeError(f"Script error: {stderr}")
+                raise RuntimeError(f"Script error: {stderr.strip()}")
 
-            # Use predefined UUIDs for capteur IDs
+            # Generate UUIDs and format result as "testId,capteurId,valeur"
             test_id = uuid.uuid4()
             capteur_ids = [
                 "550e8400-e29b-41d4-a716-446655440001",
@@ -65,9 +51,10 @@ class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
                 "550e8400-e29b-41d4-a716-446655440003"
             ]
             capteur_id = capteur_ids[0]  # Just an example; choose based on your logic
-            valeur = output.strip()
+            valeur = stdout.strip()
 
             result = f"{test_id},{capteur_id},{valeur}"
+            logger.info(f"Generated result: {result}")
             return park_pb2.CommandResponse(result=result)
 
         except Exception as e:
@@ -75,24 +62,6 @@ class CarParkServicer(park_pb2_grpc.CarParkServiceServicer):
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)
             return park_pb2.CommandResponse(result="Error occurred")
-
-    def StreamLogs(self, request, context):
-        stream = []
-        with self.lock:
-            self.streams.append(stream)
-        while True:
-            while stream:
-                log_message = stream.pop(0)
-                yield log_message
-            time.sleep(1)
-
-    def _send_log_message(self, message):
-        timestamp = Timestamp()
-        timestamp.GetCurrentTime()
-        log_message = park_pb2.LogMessage(message=message, timestamp=str(timestamp))
-        with self.lock:
-            for stream in self.streams:
-                stream.append(log_message)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
